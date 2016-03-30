@@ -1,0 +1,102 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ExpandableRowListView">
+
+    <!-- NOTE: If you want to modify the dropdown arrow, modify the following.
+                It is a character in 'Segoe MDL2 Assets' font. -->
+    <x:String x:Key="ArrowGlyph">&#xE96E;</x:String>
+    
+    <!-- Defines item template for 'ExpandableRowListView' -->
+    <Style TargetType="local:ExpandableRowListViewControlItem">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:ExpandableRowListViewControlItem">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="ViewStates">
+                                <VisualState x:Name="Expanded">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="RotateTextblockArrowGlyph" Storyboard.TargetProperty="Angle" To="180" Duration="0:0:0.2"/>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="gridRowContent" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="Visible"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Collapsed">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="RotateTextblockArrowGlyph" Storyboard.TargetProperty="Angle" To="0" Duration="0:0:0.2"/>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="gridRowContent" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="Collapsed"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition MinHeight="{StaticResource ListViewItemMinHeight}"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- CAUTION: Make sure the following 'Grid.Background' is set to
+                                    at least 'Transparent' else 'Tapped' event won't fire
+                                    around 'ListViewItem' edges made with 'Padding'. -->
+                        <Grid Name="gridRowHeader" Grid.Row="0" Background="Transparent">
+                            <Grid VerticalAlignment="Center" Margin="12,0,12,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="32"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Grid.Column="0" Height="32">
+                                    <Grid.RenderTransform>
+                                        <RotateTransform x:Name="RotateTextblockArrowGlyph" CenterX="16" CenterY="16"/>
+                                    </Grid.RenderTransform>
+
+                                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="{StaticResource ArrowGlyph}" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Grid>
+
+                                <ContentPresenter Grid.Column="1" Content="{TemplateBinding RowHeader}" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Grid>
+
+                        <!-- Expandable row content -->
+                        <Grid x:Name="gridRowContent" Grid.Row="1" Visibility="Collapsed" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <ContentPresenter x:Name="contentpresenterRowContent" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" Margin="12,0,12,0"/>
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Defines control template for 'ExpandableRowListViewControl' -->
+    <Style TargetType="local:ExpandableRowListViewControl">
+        <Setter Property="ItemTemplate" Value="{StaticResource ListPickerFlyoutPresenterContentTemplate}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:ExpandableRowListViewControl">
+                    <!-- Parent 'ListView' which is clickable -->
+                    <ListView Name="listviewRows"
+                              Background="{TemplateBinding Background}"
+                              BorderBrush="{TemplateBinding BorderBrush}"
+                              BorderThickness="{TemplateBinding BorderThickness}"
+                              SelectionMode="None"
+                              IsItemClickEnabled="True"
+                              ItemsSource="{TemplateBinding ItemsSource}">
+
+                        <ListView.ItemContainerStyle>
+                            <!-- We want to remove the default padding and use our own.
+                                 Also, we want 'ListViewItem' to stretch to take all horizontal space. -->
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

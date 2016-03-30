@@ -1,0 +1,39 @@
+﻿<Page
+    x:Class="ExpandableRowListView.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ExpandableRowListView"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <local:ExpandableRowListViewControl x:Name="control" Width="400" Height="400" BorderBrush="Black" BorderThickness="1">
+            <local:ExpandableRowListViewControl.Items>
+                <local:ExpandableRowListViewControlItem x:Name="item1" RowHeader="Item1">
+                    <local:ExpandableRowListViewControlItem.Content>
+                        <ListView>
+                            <ListView.Items>
+                                <ListViewItem Content="1"/>
+                                <ListViewItem Content="2"/>
+                            </ListView.Items>
+                        </ListView>
+                    </local:ExpandableRowListViewControlItem.Content>
+                </local:ExpandableRowListViewControlItem>
+
+                <local:ExpandableRowListViewControlItem x:Name="item2" IsExpanded="True">
+                    <local:ExpandableRowListViewControlItem.RowHeader>
+                        <StackPanel Orientation="Horizontal">
+                            <SymbolIcon Symbol="Like" Margin="0,0,10,0"/>
+                            <TextBlock Text="Item2"/>
+                        </StackPanel>
+                    </local:ExpandableRowListViewControlItem.RowHeader>
+
+                    <local:ExpandableRowListViewControlItem.Content>
+                        <Image Source="Assets/StoreLogo.png" Stretch="None"/>
+                    </local:ExpandableRowListViewControlItem.Content>
+                </local:ExpandableRowListViewControlItem>
+            </local:ExpandableRowListViewControl.Items>
+        </local:ExpandableRowListViewControl>
+    </Grid>
+</Page>
