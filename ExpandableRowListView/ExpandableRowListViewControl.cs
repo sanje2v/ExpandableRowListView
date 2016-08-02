@@ -86,7 +86,11 @@ namespace ExpandableRowListView
         private static void IsExpanded_OnChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var item = (ExpandableRowListViewControlItem)d;
+            var oldValue = (bool)e.OldValue;
             var newValue = (bool)e.NewValue;
+
+            if (oldValue == newValue)
+                return;
 
             if (newValue)
                 VisualStateManager.GoToState(item, VISUALSTATES_EXPANDED, true);
